@@ -1,0 +1,5 @@
+{
+  "name": "SaaS_Agendamento_Multi_Tenant",
+  "description": "Plataforma completa de agendamentos multiempresa com login Magic Link, gestão financeira, reuniões e integrações.",
+  "requestFramePermissions": []
+}
