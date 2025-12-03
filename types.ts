@@ -19,14 +19,16 @@ export interface User {
   role: UserRole;
   companyId?: string; // Null for Master Admin
   avatar?: string;
+  phone?: string;
 }
 
 export interface Company {
   id: string;
   name: string;
-  slug: string; // for public link
+  slug: string;
   active: boolean;
   plan: 'FREE' | 'PRO' | 'ENTERPRISE';
+  createdAt: string;
 }
 
 export interface Service {
@@ -41,31 +43,48 @@ export interface Appointment {
   id: string;
   companyId: string;
   clientId: string;
-  clientName: string; // Denormalized for display
-  providerId: string; // The service provider
+  clientName: string;
+  providerId: string;
+  providerName: string;
   serviceId: string;
   serviceName: string;
   date: string; // ISO Date YYYY-MM-DD
   startTime: string; // HH:mm
+  endTime: string; // HH:mm
   status: AppointmentStatus;
   notes?: string;
   meetLink?: string;
 }
 
+export interface TimeSlot {
+  start: string;
+  end: string;
+}
+
 export interface WeeklyAvailability {
   dayOfWeek: number; // 0 = Sunday
   isOpen: boolean;
-  slots: { start: string; end: string }[];
+  slots: TimeSlot[];
 }
 
 export interface DailyException {
   date: string; // YYYY-MM-DD
   isOpen: boolean;
-  slots: { start: string; end: string }[];
+  slots: TimeSlot[];
+}
+
+export interface ProviderProfile {
+  id: string;
+  userId: string;
+  companyId: string;
+  specialties: string[];
+  weeklyAvailability: WeeklyAvailability[];
+  exceptions: DailyException[];
 }
 
 export interface FinancialSummary {
   totalRevenue: number;
   pendingRevenue: number;
   appointmentsCount: number;
+  activeCompanies?: number; // For Master Admin
 }

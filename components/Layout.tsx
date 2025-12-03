@@ -1,6 +1,6 @@
 import React from 'react';
 import { User, UserRole } from '../types';
-import { LayoutDashboard, Calendar, Users, Settings, LogOut, PlusCircle } from 'lucide-react';
+import { LayoutDashboard, Calendar, Users, Settings, LogOut, PlusCircle, Clock, Building } from 'lucide-react';
 
 interface Props {
   user: User;
@@ -32,12 +32,12 @@ export const Layout: React.FC<Props> = ({ user, onLogout, currentView, onChangeV
         <div className="p-6 border-b border-gray-100">
           <h1 className="text-xl font-bold text-gray-900 tracking-tight">Agendamentos<span className="text-primary-600">.ai</span></h1>
           <div className="mt-4 flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-100">
-             <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-sm">
+             <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-sm uppercase">
                 {user.name.charAt(0)}
              </div>
              <div className="overflow-hidden">
                 <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
-                <p className="text-xs text-gray-500 truncate">{user.role}</p>
+                <p className="text-xs text-gray-500 truncate capitalize">{user.role.replace('_', ' ').toLowerCase()}</p>
              </div>
           </div>
         </div>
@@ -48,12 +48,21 @@ export const Layout: React.FC<Props> = ({ user, onLogout, currentView, onChangeV
                <NavItem view="new_appointment" icon={PlusCircle} label="Novo Agendamento" />
                <NavItem view="my_calendar" icon={Calendar} label="Meus Agendamentos" />
              </>
+          ) : user.role === UserRole.MASTER_ADMIN ? (
+            <>
+              <NavItem view="dashboard" icon={LayoutDashboard} label="Visão Geral" />
+              <NavItem view="companies" icon={Building} label="Empresas" />
+              <NavItem view="finance" icon={Users} label="Financeiro Global" />
+              <NavItem view="settings" icon={Settings} label="Config. Sistema" />
+            </>
           ) : (
+            // Company Admin or Provider
             <>
               <NavItem view="dashboard" icon={LayoutDashboard} label="Dashboard" />
               <NavItem view="calendar" icon={Calendar} label="Agenda Completa" />
-              {user.role !== UserRole.PROVIDER && (
-                <NavItem view="settings" icon={Settings} label="Configurações" />
+              <NavItem view="availability" icon={Clock} label="Disponibilidade" />
+              {user.role === UserRole.COMPANY_ADMIN && (
+                <NavItem view="settings" icon={Settings} label="Config. Empresa" />
               )}
             </>
           )}
@@ -71,7 +80,7 @@ export const Layout: React.FC<Props> = ({ user, onLogout, currentView, onChangeV
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-64 p-4 md:p-8 overflow-auto">
+      <main className="flex-1 md:ml-64 p-4 md:p-8 overflow-auto h-screen">
          {children}
       </main>
     </div>

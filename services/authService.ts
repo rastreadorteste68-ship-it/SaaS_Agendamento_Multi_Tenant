@@ -1,16 +1,17 @@
 import { User, UserRole } from '../types';
 
-// Mock users database
+// Mock users database simulating the SaaS hierarchy
 const MOCK_USERS: User[] = [
-  { id: '1', name: 'Master Admin', email: 'admin@saas.com', role: UserRole.MASTER_ADMIN },
-  { id: '2', name: 'Empresa Alpha', email: 'alpha@company.com', role: UserRole.COMPANY_ADMIN, companyId: 'c1' },
-  { id: '3', name: 'João Prestador', email: 'joao@company.com', role: UserRole.PROVIDER, companyId: 'c1' },
+  { id: '1', name: 'Master Super Admin', email: 'master@saas.com', role: UserRole.MASTER_ADMIN },
+  { id: '2', name: 'Admin Tech Solutions', email: 'admin@tech.com', role: UserRole.COMPANY_ADMIN, companyId: 'c1' },
+  { id: '3', name: 'João Desenvolvedor', email: 'joao@tech.com', role: UserRole.PROVIDER, companyId: 'c1' },
   { id: '4', name: 'Maria Cliente', email: 'maria@gmail.com', role: UserRole.CLIENT, companyId: 'c1' },
+  { id: '5', name: 'Admin Clínica', email: 'admin@saude.com', role: UserRole.COMPANY_ADMIN, companyId: 'c2' },
 ];
 
 export const sendMagicCode = async (email: string): Promise<boolean> => {
   // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 800));
   console.log(`[MAGIC LINK] Code sent to ${email}. For demo purposes, use code: 123456`);
   return true;
 };
